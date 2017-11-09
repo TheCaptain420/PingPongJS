@@ -1,6 +1,6 @@
 # PingPongJS  
 FritidsProjekt: Ping Pong in JavaScript  
-**JavaScript koden står i Pingpong.html** 
+**JavaScript koden står i Pingpong.html**  
 **InGame ->** 
 ![](https://i.gyazo.com/c041cfad24799766b30663b3eba1e525.png)  
 

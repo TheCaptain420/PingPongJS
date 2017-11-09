@@ -1,7 +1,9 @@
 # PingPongJS  
 FritidsProjekt: Ping Pong in JavaScript  
 **JavaScript koden står i Pingpong.html**  
-**InGame ->** 
+Et pingpong spil, der fungere præcist ligesom normalt pong.  
+  
+**InGame ->**  
 ![](https://i.gyazo.com/c041cfad24799766b30663b3eba1e525.png)  
 
 **Win Screen ->**  

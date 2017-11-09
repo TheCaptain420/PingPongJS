@@ -4,25 +4,31 @@
 <canvas id ="gameCanvas" width="800" height="600"> </canvas>
 
 <script>
+    //Laver Canvas (En javascript ting)
     var canvas;
     var canvasContext;
-
+    //Start pos for ball
     var ballX = 50;
     var ballY = 50;
+    //Hastigheden på Ball
     var ballSpeedX = 10;
     var ballSpeedY = 4;
-
+    //Beskriver score
     var player1Score = 0;
     var player2Score = 0;
+    //Deklarer scoren man skal have for at vinde
     const WINNING_SCORE = 3;
 
+    //Om den skal vise win screen eller ej, bliver brugt senere
     var showingWinScreen = false;
-
+    //Giver værdier til paddle
     var paddle1Y = 250;
     var paddle2Y = 250;
+    //const er en constant, der ikke kan ændre senere
     const PADDLE_THICKNESS = 10;
     const PADDLE_HEIGHT = 100;
 
+    //Henter mouse pos
     function calculateMousePos(evt) {
         var rect = canvas.getBoundingClientRect();
         var root = document.documentElement;
@@ -35,6 +41,7 @@
 
     }
 
+    //Hvis den viser winscreen, kan man klikke på skærmen for at resette playerscore og fjerne winscreen
     function handleMouseClick(evt) {
         if(showingWinScreen) {
             player1Score = 0;
@@ -43,11 +50,14 @@
         }
     }
 
+    //En ting man gør i JS
     window.onload =function() {
         console.log("hello world");
+        //noget canvas
         canvas = document.getElementById("gameCanvas");
         canvasContext = canvas.getContext("2d");
 
+        // kører move og draw, 30 gange i sec.
         var framesPerSecond = 30;
         setInterval(function(){
             moveEverything();
@@ -56,6 +66,7 @@
 
         canvas.addEventListener("mousedown",handleMouseClick);
 
+        //Henter mus pos
         canvas.addEventListener("mousemove",
             function(evt) {
                 var mousePos = calculateMousePos(evt)
@@ -64,6 +75,7 @@
 
     }
 
+    //en funktion der hvis de har nået winning score, viser den winscreen, og resetter ball pos.
     function ballReset() {
         if(player1Score >= WINNING_SCORE ||
             player2Score >= WINNING_SCORE){
@@ -76,6 +88,8 @@
 
     }
 
+    //Funtion der styrer pc paddle(AI?)
+    //Tager ball pos, og checker om paddle er over eller under, og så rykker den herefter, for at ramme bolden.
     function computerMovement(){
         var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2);
         if(paddle2YCenter< ballY -(PADDLE_HEIGHT/3)) {
@@ -86,14 +100,16 @@
     }
 
     function moveEverything () {
+        //Hvis den viser winscreen skal den ikke køre resten
         if(showingWinScreen) {
             return;
         }
+        //Kalder computermovement
         computerMovement();
-
+        //Sætter bolden til at rykke sig
         ballX = ballX + ballSpeedX;
         ballY = ballY + ballSpeedY;
-
+        //Hvis bolden kommer ud på vestre side af canvas("if" den ikke rammer paddle), får man point og ball bliver reset.
         if(ballX < 0) {
             if(ballY > paddle1Y &&
                 ballY < paddle1Y+PADDLE_HEIGHT) {
@@ -105,6 +121,7 @@
                 ballReset();
             }
         }
+        //hvis bolden kommer ud på højre side af map/canvas, får man point("if" den ikke rammer pad), ellers går den bare tilbage)
         if(ballX > canvas.width) {
             if(ballY > paddle2Y &&
                 ballY < paddle2Y+PADDLE_HEIGHT) {
@@ -116,14 +133,16 @@
                 ballReset();
             }
         }
+        //Hvis bolden rammer toppen af skærmen, hopper den tilbage
         if(ballY < 0) {
             ballSpeedY = -ballSpeedY;
         }
+        //Hvis bolden rammer bunden, hopper den tilbage.
         if(ballY > canvas.height) {
             ballSpeedY = -ballSpeedY;
         }
     }
-
+    //tegner stregen(stregerne) der går ned igennem.
     function drawNet() {
         for(var i=0;i<canvas.height; i+=40){
             colorRect(canvas.width/2-1,i,2,20,"white");
@@ -131,6 +150,8 @@
     }
 
     function drawEverything() {
+        //Tegner via canvas funktioner
+
         //background
         colorRect(0,0,canvas.width,canvas.height, "black");
 
@@ -166,15 +187,16 @@
 
     }
 
+    //bruger canvas funks, til at tegne+farve en cirkel.
     function colorCircle(centerX, centerY, radius, drawColor){
-//ball
+        //ball
         canvasContext.fillStyle = drawColor;
         canvasContext.beginPath();
         canvasContext.arc(centerX,centerY,radius,0,Math.PI*2,true);
         canvasContext.fill();
 
     }
-
+    //bruger canvas funks, til at tegne+farve en rect.
     function colorRect(leftX,topY,width,height,drawColor){
         canvasContext.fillStyle = drawColor;
         canvasContext.fillRect(leftX,topY,width,height);
